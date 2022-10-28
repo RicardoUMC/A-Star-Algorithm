@@ -1,0 +1,24 @@
+Se basa en datos incompletos para formular una hipótesis que puede se buena... o no
+
+Heurística (suposición o prejuicio)
+h(n) es el supuesto, puede ser distancia euclidiana o los pasos que se harían óptimamente
+g(n) es el coste real (el coste de un nodo a otro)
+
++----------------------+
+|  f(n) = g(n) + h(n)  |
++----------------------+
+
+- Búsqueda en gráfos y puede ser asociado con apps como google maps
+
+- Algorítmo primero el mejor
+
+Características: 
+
+- Grafos finitos
+
+Estructuras -> Listas (abierta y cerrada)
+Complejidad: Exponencial por la cantidad de nodos dentro del espacio de búsqueda a lo largo de toda la solución
+
+Ventaja: Elige el nodo de menor costo
+Desventaja: Tiempo de cómputo
+
