@@ -12,6 +12,8 @@ struct Arista
     double costo;
 };
 
+typedef Arista *arista_ptr_t;
+
 struct Nodo
 {
     string ciudad;
@@ -19,13 +21,12 @@ struct Nodo
     double puntaje_h;
     double puntaje_f = 0;
 
-    vector<Arista*> adyacentes;
+    vector<arista_ptr_t> adyacentes;
 
     struct Nodo* padre;
 };
 
 typedef Nodo *nodo_ptr_t;
-typedef Arista *arista_ptr_t;
 
 void AgregaNodo(nodo_ptr_t &nodo, string ciudad, double heuristica);
 void AsociaArista(nodo_ptr_t &origen, nodo_ptr_t &destino, double costo);
@@ -189,7 +190,7 @@ int main(void)
     // Neamt
     AsociaArista(Neamt, Iasi, 87);
 
-    // imprimeCiudades(Bucharest);
+    imprimeCiudades(Bucharest);
 
     return 0;
 }
