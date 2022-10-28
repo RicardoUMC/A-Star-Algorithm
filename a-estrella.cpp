@@ -36,8 +36,7 @@ struct Lista
 
 typedef Lista* lista_ptr_t;
 
-    void
-    AgregaNodo(nodo_ptr_t &nodo, string ciudad, double heuristica);
+void AgregaNodo(nodo_ptr_t &nodo, string ciudad, double heuristica);
 void AsociaArista(nodo_ptr_t &origen, nodo_ptr_t &destino, double costo);
 void ImprimeCiudades(nodo_ptr_t &nodo);
 
