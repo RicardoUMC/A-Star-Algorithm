@@ -1,7 +1,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <vector>
+#include <list>
+#include <queue>
 
 using namespace std;
 
@@ -26,28 +27,15 @@ struct Nodo
 typedef Nodo *nodo_ptr_t;
 typedef Arista *arista_ptr_t;
 
-void AgregaNodo(nodo_ptr_t &nodo, string ciudad, double heuristica) 
-{
-    nodo->ciudad = ciudad;
-    nodo->puntaje_h = heuristica;
-}
+void AgregaNodo(nodo_ptr_t &nodo, string ciudad, double heuristica);
+void AsociaArista(nodo_ptr_t &origen, nodo_ptr_t &destino, double costo);
+void imprimeCiudades(nodo_ptr_t &nodo);
 
-void AsociaArista(nodo_ptr_t &origen, nodo_ptr_t &destino, double costo)
+void A_Estrella(nodo_ptr_t &inicio, nodo_ptr_t &final)
 {
-    arista_ptr_t auxiliar = new Arista();
-    auxiliar->objetivo = destino;
-    auxiliar->costo = costo;
+    // list<nodo_ptr_t>  
+    // priority_queue<double, vector<double>, greater<double>> queue;
 
-    origen->adyacentes.push_back(auxiliar);
-}
-
-void imprimeCiudades(nodo_ptr_t &nodo)
-{
-    cout << endl << "Ciudades cercanas a " + nodo->ciudad << ":\n";
-    for (size_t i = 0; i < nodo->adyacentes.size(); i++)
-    {
-        cout << nodo->adyacentes[i]->objetivo->ciudad << '\n';
-    }
 }
 
 int main(void)
@@ -94,7 +82,24 @@ int main(void)
     
     nodo_ptr_t Giurgiu = new Nodo();
     AgregaNodo(Giurgiu, "Giurgiu", 77);
-    
+
+    nodo_ptr_t Urziceni = new Nodo();
+    AgregaNodo(Urziceni, "Urziceni", 80);
+
+    nodo_ptr_t Hirsova = new Nodo();
+    AgregaNodo(Hirsova, "Hirsova", 151);
+
+    nodo_ptr_t Eforie = new Nodo();
+    AgregaNodo(Eforie, "Eforie", 161);
+
+    nodo_ptr_t Vaslui = new Nodo();
+    AgregaNodo(Vaslui, "Vaslui", 199);
+
+    nodo_ptr_t Iasi = new Nodo();
+    AgregaNodo(Iasi, "Iasi", 226);
+
+    nodo_ptr_t Neamt = new Nodo();
+    AgregaNodo(Neamt, "Neamt", 234);
 
     // Creación de las aristas conexiones entre ciudades
 
@@ -156,9 +161,60 @@ int main(void)
     AsociaArista(Bucharest, Pitesti, 101);
     AsociaArista(Bucharest, Fagaras, 211);
     AsociaArista(Bucharest, Giurgiu, 90);
+    AsociaArista(Bucharest, Urziceni, 85);
 
     // Giurgiu
     AsociaArista(Giurgiu, Bucharest, 90);
 
+    // Urziceni
+    AsociaArista(Urziceni, Bucharest, 85);
+    AsociaArista(Urziceni, Hirsova, 98);
+    AsociaArista(Urziceni, Vaslui, 142);
+
+    // Hirsova
+    AsociaArista(Hirsova, Urziceni, 98);
+    AsociaArista(Hirsova, Eforie, 86);
+
+    // Eforie
+    AsociaArista(Eforie, Hirsova, 86);
+
+    // Vaslui
+    AsociaArista(Vaslui, Urziceni, 142);
+    AsociaArista(Vaslui, Iasi, 92);
+
+    // Iasi
+    AsociaArista(Iasi, Vaslui, 92);
+    AsociaArista(Iasi, Neamt, 87);
+
+    // Neamt
+    AsociaArista(Neamt, Iasi, 87);
+
+    // imprimeCiudades(Bucharest);
+
     return 0;
+}
+
+void AgregaNodo(nodo_ptr_t &nodo, string ciudad, double heuristica)
+{
+    nodo->ciudad = ciudad;
+    nodo->puntaje_h = heuristica;
+}
+
+void AsociaArista(nodo_ptr_t &origen, nodo_ptr_t &destino, double costo)
+{
+    arista_ptr_t auxiliar = new Arista();
+    auxiliar->objetivo = destino;
+    auxiliar->costo = costo;
+
+    origen->adyacentes.push_back(auxiliar);
+}
+
+void imprimeCiudades(nodo_ptr_t &nodo)
+{
+    cout << endl
+         << "Ciudades cercanas a " + nodo->ciudad << ":\n";
+    for (size_t i = 0; i < nodo->adyacentes.size(); i++)
+    {
+        cout << nodo->adyacentes[i]->objetivo->ciudad << '\n';
+    }
 }
