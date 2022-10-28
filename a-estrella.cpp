@@ -63,8 +63,10 @@ void AgregaEnLista(lista_ptr_t &lista, nodo_ptr_t &agregado, bool prioridad)
     else
     {
         lista_ptr_t auxiliar = new(Lista);
+        lista_ptr_t actual = new(Lista);
 
-        lista_ptr_t actual = lista;
+        actual = lista;
+        
         while (actual->nodo_sig != NULL && prioridad && (agregado->puntaje_f >= actual->nodo_sig->nodo_asociado->puntaje_f))
         {
             actual = actual->nodo_sig;
@@ -100,8 +102,9 @@ void AgregaEnLista(lista_ptr_t &lista, nodo_ptr_t &agregado, bool prioridad)
 nodo_ptr_t EliminaEnLista(lista_ptr_t &lista, nodo_ptr_t &eliminado)
 {
     lista_ptr_t auxiliar = new(Lista);
-    lista_ptr_t actual = lista;
     nodo_ptr_t regreso = new(Nodo);
+    lista_ptr_t actual = new(Lista);
+    actual = lista;
 
     while (actual->nodo_sig != NULL && actual->nodo_asociado != eliminado)
     {
