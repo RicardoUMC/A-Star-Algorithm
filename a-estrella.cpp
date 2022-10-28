@@ -51,7 +51,6 @@ void AgregaEnLista(lista_ptr_t lista, nodo_ptr_t &agregado, bool prioridad)
         actual = actual->nodo_sig;
     }
 
-    cout << "Hola mundo" << endl;
     if (actual == NULL)
     {
         cout << "Inserta al inicio (p)" << endl;
@@ -75,6 +74,10 @@ void AgregaEnLista(lista_ptr_t lista, nodo_ptr_t &agregado, bool prioridad)
         cout << "Inserta en medio" << endl;
         auxiliar->nodo_sig = actual->nodo_sig;
         actual->nodo_sig = auxiliar;
+    }
+    else
+    {
+        cout << "Hola mundo" << endl;
     }
 }
 
