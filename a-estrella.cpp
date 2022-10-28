@@ -144,6 +144,8 @@ nodo_ptr_t EliminaEnLista(lista_ptr_t &lista, nodo_ptr_t &eliminado)
 
 bool BuscaEnLista(lista_ptr_t &lista, nodo_ptr_t &nodo)
 {
+    if (lista == NULL) return false;
+
     lista_ptr_t auxiliar = new (Lista);
     lista_ptr_t actual = new(Lista);
     actual = lista;
