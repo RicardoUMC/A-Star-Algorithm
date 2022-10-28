@@ -97,7 +97,7 @@ void AgregaEnLista(lista_ptr_t &lista, nodo_ptr_t &agregado, bool prioridad)
     // lista->nodo_asociado->adyacentes = agregado->adyacentes;
 }
 
-nodo_ptr_t EliminaEnLista(lista_ptr_t &lista, nodo_ptr_t eliminado)
+nodo_ptr_t EliminaEnLista(lista_ptr_t &lista, nodo_ptr_t &eliminado)
 {
     lista_ptr_t auxiliar = new(Lista);
     lista_ptr_t actual = lista;
@@ -144,9 +144,11 @@ nodo_ptr_t EliminaEnLista(lista_ptr_t &lista, nodo_ptr_t eliminado)
 
 bool BuscaEnLista(lista_ptr_t &lista, nodo_ptr_t &nodo)
 {
-    lista_ptr_t auxiliar;
-    lista_ptr_t actual = lista;
+    lista_ptr_t auxiliar = new (Lista);
+    lista_ptr_t actual = new(Lista);
+    actual = lista;
 
+    ImprimeLista(lista, "");
     bool presente = false;
     while (actual->nodo_sig != NULL && actual->nodo_asociado != nodo)
     {
@@ -168,7 +170,6 @@ void A_Estrella(nodo_ptr_t &inicio, nodo_ptr_t &final)
 
     AgregaEnLista(col_prio, inicio, true);
 
-    // ImprimeLista(col_prio, "Prioridad");
     bool encontrado = false;
     while (col_prio != NULL && !encontrado)
     {
@@ -179,6 +180,9 @@ void A_Estrella(nodo_ptr_t &inicio, nodo_ptr_t &final)
 
         if (presente == final) encontrado = true;
 
+        // ImprimeLista(col_prio, "Prioridad");
+        // ImprimeLista(explorados, "Explorados");
+
         for (size_t i = 0; i < presente->adyacentes.size(); i++)
         {
             nodo_ptr_t hijo = new Nodo();
@@ -186,6 +190,9 @@ void A_Estrella(nodo_ptr_t &inicio, nodo_ptr_t &final)
             double costo = presente->adyacentes[i]->costo;
             double puntaje_g_temp = presente->puntaje_g + costo;
             double puntaje_f_temp = puntaje_g_temp + hijo->puntaje_h;
+
+            // cout << puntaje_g_temp + hijo->puntaje_h << endl;
+            // cout << puntaje_f_temp << endl;
 
             /*if hijo node has been evaluated and
             the newer f_score is higher, skip*/
@@ -195,6 +202,7 @@ void A_Estrella(nodo_ptr_t &inicio, nodo_ptr_t &final)
             newer f_score is lower*/
             else if(BuscaEnLista(col_prio, hijo) || puntaje_f_temp < hijo->puntaje_f) 
             {
+                cout << "Entro" << endl;
                 hijo->padre = presente;
                 hijo->puntaje_g = puntaje_g_temp;
                 hijo->puntaje_f = puntaje_f_temp;
