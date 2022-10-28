@@ -153,6 +153,9 @@ bool BuscaEnLista(lista_ptr_t &lista, nodo_ptr_t &nodo)
     lista_ptr_t actual = new(Lista);
     actual = lista;
 
+    cout << actual->nodo_asociado << endl;
+    cout << lista->nodo_asociado << endl;
+
     ImprimeLista(lista, "");
     bool presente = false;
     while (actual->nodo_sig != NULL && actual->nodo_asociado != nodo)
@@ -163,6 +166,8 @@ bool BuscaEnLista(lista_ptr_t &lista, nodo_ptr_t &nodo)
 
     if (actual->nodo_asociado == nodo) presente = true;
 
+    delete auxiliar;
+    delete actual;
     return presente;
 }
 
