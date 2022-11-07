@@ -427,10 +427,11 @@ void A_Estrella(nodo_ptr_t &inicio, nodo_ptr_t &final)
             }
 
             AgregaEnLista(col_prio, hijo, true);
-            
+
         }
-        if (!BuscaEnLista(explorados, presente) && !BuscaEnLista(col_prio, presente))
-            AgregaEnLista(explorados, presente, false);
+        
+        AgregaEnLista(explorados, presente, false);
+    
     }
 
 }
