@@ -201,10 +201,10 @@ int main(void)
     AsociaArista(Neamt, Iasi, 87);
 
     // Algoritmo A*
-    A_Estrella(Lugoj, Sibiu);
+    A_Estrella(Arad, Bucharest);
 
     // Impresisón del camino
-    vector<string> camino = ImprimeCamino(Sibiu);
+    vector<string> camino = ImprimeCamino(Bucharest);
 
     return 0;
 }
@@ -389,9 +389,9 @@ void A_Estrella(nodo_ptr_t &inicio, nodo_ptr_t &final)
     bool encontrado = false;
     while (col_prio != NULL && !encontrado)
     {
-        ImprimeLista(col_prio, "Prioridad");
-        ImprimeLista(explorados, "Explorados");
-        cout << endl;
+        // ImprimeLista(col_prio, "Prioridad");
+        // ImprimeLista(explorados, "Explorados");
+        // cout << endl;
         nodo_ptr_t presente = new (Nodo);
         presente = EliminaEnLista(col_prio, col_prio->nodo_asociado);
 
