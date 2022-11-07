@@ -64,7 +64,6 @@ void AgregaEnLista(lista_ptr_t &lista, nodo_ptr_t &agregado, bool prioridad)
         lista = new(Lista);
         lista->nodo_asociado = agregado;
         lista->nodo_sig = NULL;
-        cout << "Inserta al inicio (p)" << endl;
     }
 
     else if (!prioridad)
@@ -156,22 +155,22 @@ nodo_ptr_t EliminaEnLista(lista_ptr_t &lista, nodo_ptr_t &eliminado)
         }
         delete actual;
         actual = lista;
-        cout << "Nodo eliminado correctamente al inicio." << endl;
     }
+
     else if (actual->nodo_sig == NULL && actual->nodo_asociado == eliminado)
     {
         auxiliar->nodo_sig = NULL;
         delete actual;
         actual = auxiliar;
-        cout << "Nodo eliminado correctamente al final." << endl;
     }
+
     else if (actual->nodo_sig != NULL)
     {
         auxiliar->nodo_sig = actual->nodo_sig;
         delete actual;
         actual = auxiliar;
-        cout << "Nodo eliminado correctamente en medio." << endl;
     }
+
     return regreso;
 }
 
