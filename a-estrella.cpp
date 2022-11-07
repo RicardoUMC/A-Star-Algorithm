@@ -23,18 +23,18 @@ struct Nodo
 
     vector<arista_ptr_t> adyacentes;
 
-    Nodo* padre;
+    Nodo *padre;
 };
 
-typedef Nodo* nodo_ptr_t;
+typedef Nodo *nodo_ptr_t;
 
 struct Lista
 {
     nodo_ptr_t nodo_asociado;
-    Lista* nodo_sig;
+    Lista *nodo_sig;
 };
 
-typedef Lista* lista_ptr_t;
+typedef Lista *lista_ptr_t;
 
 void AgregaNodo(nodo_ptr_t &nodo, string ciudad, double heuristica);
 void AsociaArista(nodo_ptr_t &origen, nodo_ptr_t &destino, double costo);
@@ -51,46 +51,46 @@ void A_Estrella(nodo_ptr_t &inicio, nodo_ptr_t &final);
 
 int main(void)
 {
-    //Creación de ciudades
+    // Creación de ciudades
     nodo_ptr_t Arad = new Nodo();
     AgregaNodo(Arad, "Arad", 366);
-    
+
     nodo_ptr_t Zerind = new Nodo();
     AgregaNodo(Zerind, "Zerind", 374);
-    
+
     nodo_ptr_t Oradea = new Nodo();
     AgregaNodo(Oradea, "Oradea", 380);
-    
+
     nodo_ptr_t Sibiu = new Nodo();
     AgregaNodo(Sibiu, "Sibiu", 253);
-    
+
     nodo_ptr_t Fagaras = new Nodo();
     AgregaNodo(Fagaras, "Fagaras", 178);
-    
+
     nodo_ptr_t Rimnicu = new Nodo();
     AgregaNodo(Rimnicu, "Rimnicu Vilcea", 193);
-    
+
     nodo_ptr_t Pitesti = new Nodo();
     AgregaNodo(Pitesti, "Pitesti", 98);
-    
+
     nodo_ptr_t Timisoara = new Nodo();
     AgregaNodo(Timisoara, "Timisoara", 329);
-    
+
     nodo_ptr_t Lugoj = new Nodo();
     AgregaNodo(Lugoj, "Lugoj", 244);
-    
+
     nodo_ptr_t Mehadia = new Nodo();
     AgregaNodo(Mehadia, "Mehadia", 241);
-    
+
     nodo_ptr_t Drobeta = new Nodo();
     AgregaNodo(Drobeta, "Drobeta", 242);
-    
+
     nodo_ptr_t Craiova = new Nodo();
     AgregaNodo(Craiova, "Craiova", 160);
-    
+
     nodo_ptr_t Bucharest = new Nodo();
     AgregaNodo(Bucharest, "Bucharest", 0);
-    
+
     nodo_ptr_t Giurgiu = new Nodo();
     AgregaNodo(Giurgiu, "Giurgiu", 77);
 
@@ -122,7 +122,7 @@ int main(void)
     // Zerind
     AsociaArista(Zerind, Arad, 75);
     AsociaArista(Zerind, Oradea, 71);
-    
+
     // Oradea
     AsociaArista(Oradea, Zerind, 71);
     AsociaArista(Oradea, Sibiu, 151);
@@ -136,29 +136,29 @@ int main(void)
     // Fagaras
     AsociaArista(Fagaras, Sibiu, 99);
     AsociaArista(Fagaras, Bucharest, 211);
-    
+
     // Rimnicu Vilcea
     AsociaArista(Rimnicu, Sibiu, 80);
     AsociaArista(Rimnicu, Craiova, 146);
     AsociaArista(Rimnicu, Pitesti, 97);
-    
+
     // Pitesti
     AsociaArista(Pitesti, Rimnicu, 97);
     AsociaArista(Pitesti, Craiova, 138);
     AsociaArista(Pitesti, Bucharest, 101);
-    
+
     // Timisoara
     AsociaArista(Timisoara, Arad, 118);
     AsociaArista(Timisoara, Lugoj, 111);
-    
+
     // Lugoj
     AsociaArista(Lugoj, Timisoara, 111);
     AsociaArista(Lugoj, Mehadia, 70);
-    
+
     // Mehadia
     AsociaArista(Mehadia, Lugoj, 70);
-    AsociaArista(Mehadia, Mehadia, 75);
-    
+    AsociaArista(Mehadia, Drobeta, 75);
+
     // Drobeta
     AsociaArista(Drobeta, Mehadia, 75);
     AsociaArista(Drobeta, Craiova, 120);
@@ -167,7 +167,7 @@ int main(void)
     AsociaArista(Craiova, Drobeta, 120);
     AsociaArista(Craiova, Rimnicu, 146);
     AsociaArista(Craiova, Pitesti, 138);
-    
+
     // Bucharest
     AsociaArista(Bucharest, Pitesti, 101);
     AsociaArista(Bucharest, Fagaras, 211);
@@ -200,8 +200,7 @@ int main(void)
     // Neamt
     AsociaArista(Neamt, Iasi, 87);
 
-
-    // Algoritmo A* 
+    // Algoritmo A*
     A_Estrella(Lugoj, Bucharest);
 
     // Impresisón del camino
@@ -399,40 +398,44 @@ void A_Estrella(nodo_ptr_t &inicio, nodo_ptr_t &final)
         if (presente == final)
             encontrado = true;
 
+        cout << "Origen: " << presente->ciudad << endl;
         for (size_t i = 0; i < presente->adyacentes.size(); i++)
         {
             nodo_ptr_t hijo = new Nodo();
             hijo = presente->adyacentes[i]->objetivo;
-            cout << hijo->ciudad << endl;
+
+            /*Si el nodo hijo ya está explorado y el puntaje f del
+            nodo hijo es mayor, se salta al siguiente ciclo*/
+            if (BuscaEnLista(explorados, hijo))
+                continue;
+
+            cout << "Hijo: " << hijo->ciudad << endl;
             double costo = presente->adyacentes[i]->costo;
             double puntaje_g_temp = presente->puntaje_g + costo;
             double puntaje_f_temp = puntaje_g_temp + hijo->puntaje_h;
 
-            /*Si el nodo hijo ya está explorado y el puntaje f del
-            nodo hijo es mayor, se salta al siguiente ciclo*/
-            if (BuscaEnLista(explorados, hijo) && puntaje_f_temp >= hijo->puntaje_f)
-                continue;
-
-             /*Si no, el nodo hijo no está en la cola de prioridad o
-             el nuevo puntaje de f es mejor*/
-             else if (!BuscaEnLista(col_prio, hijo) || puntaje_f_temp < hijo->puntaje_f)
+            /*Si el nuevo puntaje f del nodo hijo es mejor*/
+            if (puntaje_f_temp < hijo->puntaje_f)
             {
                 hijo->padre = presente;
                 hijo->puntaje_g = puntaje_g_temp;
                 hijo->puntaje_f = puntaje_f_temp;
 
-                nodo_ptr_t auxiliar = new (Nodo);
-                if (BuscaEnLista(col_prio, hijo))
-                    auxiliar = EliminaEnLista(col_prio, hijo);
+                EliminaEnLista(col_prio, hijo);
+                AgregaEnLista(col_prio, hijo, true);
             }
 
-            if (!BuscaEnLista(col_prio, hijo))
-                AgregaEnLista(col_prio, hijo, true);
-        }
-        if (!BuscaEnLista(explorados, presente) && !BuscaEnLista(col_prio, presente))
-            AgregaEnLista(explorados, presente, false);
-    }
+            else if (!BuscaEnLista(col_prio, hijo))
+            {
+                hijo->padre = presente;
+                hijo->puntaje_g = puntaje_g_temp;
+                hijo->puntaje_f = puntaje_f_temp;
 
+                AgregaEnLista(col_prio, hijo, true);
+            }
+        }
+        AgregaEnLista(explorados, presente, false);
+    }
 }
 
 vector<string> ImprimeCamino(nodo_ptr_t meta)
