@@ -201,10 +201,10 @@ int main(void)
     AsociaArista(Neamt, Iasi, 87);
 
     // Algoritmo A*
-    A_Estrella(Lugoj, Bucharest);
+    A_Estrella(Lugoj, Sibiu);
 
     // Impresisón del camino
-    vector<string> camino = ImprimeCamino(Bucharest);
+    vector<string> camino = ImprimeCamino(Sibiu);
 
     return 0;
 }
