@@ -426,8 +426,8 @@ void A_Estrella(nodo_ptr_t &inicio, nodo_ptr_t &final)
                     auxiliar = EliminaEnLista(col_prio, hijo);
             }
 
-            if (!BuscaEnLista(col_prio, hijo))
-                AgregaEnLista(col_prio, hijo, true);
+            AgregaEnLista(col_prio, hijo, true);
+            
         }
         if (!BuscaEnLista(explorados, presente) && !BuscaEnLista(col_prio, presente))
             AgregaEnLista(explorados, presente, false);
