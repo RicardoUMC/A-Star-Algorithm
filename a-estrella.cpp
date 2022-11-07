@@ -201,7 +201,7 @@ int main(void)
     AsociaArista(Neamt, Iasi, 87);
 
     // Algoritmo A*
-    A_Estrella(Lugoj, Bucharest);
+    A_Estrella(Arad, Bucharest);
 
     // Impresisón del camino
     vector<string> camino = ImprimeCamino(Bucharest);
@@ -389,16 +389,15 @@ void A_Estrella(nodo_ptr_t &inicio, nodo_ptr_t &final)
     bool encontrado = false;
     while (col_prio != NULL && !encontrado)
     {
-        ImprimeLista(col_prio, "Prioridad");
-        ImprimeLista(explorados, "Explorados");
-        cout << endl;
+        // ImprimeLista(col_prio, "Prioridad");
+        // ImprimeLista(explorados, "Explorados");
+        // cout << endl;
         nodo_ptr_t presente = new (Nodo);
         presente = EliminaEnLista(col_prio, col_prio->nodo_asociado);
 
         if (presente == final)
             encontrado = true;
 
-        cout << "Origen: " << presente->ciudad << endl;
         for (size_t i = 0; i < presente->adyacentes.size(); i++)
         {
             nodo_ptr_t hijo = new Nodo();
@@ -409,7 +408,6 @@ void A_Estrella(nodo_ptr_t &inicio, nodo_ptr_t &final)
             if (BuscaEnLista(explorados, hijo))
                 continue;
 
-            cout << "Hijo: " << hijo->ciudad << endl;
             double costo = presente->adyacentes[i]->costo;
             double puntaje_g_temp = presente->puntaje_g + costo;
             double puntaje_f_temp = puntaje_g_temp + hijo->puntaje_h;
