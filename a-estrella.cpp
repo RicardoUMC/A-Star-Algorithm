@@ -43,9 +43,16 @@ void ImprimeCiudades(nodo_ptr_t &nodo);
 void ImprimeLista(lista_ptr_t &lista, string nombre)
 {
     cout << "Lista " + nombre << ":\n";
-    for (lista_ptr_t i = lista; i != NULL; i = i->nodo_sig)
+    lista_ptr_t auxiliar = new(Lista);
+    auxiliar->nodo_asociado = new(Nodo);
+
+    auxiliar = lista;
+    while (auxiliar != NULL)
     {
-        cout << i->nodo_asociado->ciudad << "->";
+        cout << auxiliar->nodo_asociado->puntaje_f << "->";
+        // cout << endl << auxiliar->nodo_sig << endl;
+        auxiliar = auxiliar->nodo_sig;
+        // cout << auxiliar << endl;
     }
     cout << endl;
 }
@@ -58,45 +65,69 @@ void AgregaEnLista(lista_ptr_t &lista, nodo_ptr_t &agregado, bool prioridad)
         lista->nodo_asociado = agregado;
         lista->nodo_sig = NULL;
         cout << "Inserta al inicio (p)" << endl;
+        // cout << "Agregado (F): " << agregado->puntaje_f << endl;
     }
+
+    /* else if (prioridad)
+    {
+        lista_ptr_t auxiliar = new (Lista);
+        auxiliar->nodo_asociado = new (Nodo);
+        auxiliar->nodo_sig = new (Lista);
+
+        auxiliar->nodo_asociado = agregado;
+        auxiliar->nodo_sig = lista;
+        lista = auxiliar;
+        cout << "Inserta al inicio" << endl;
+        cout << "Agregado (F): " << agregado->puntaje_f << endl;
+    } */
 
     else
     {
-        lista_ptr_t auxiliar = new(Lista);
-        lista_ptr_t actual = new(Lista);
+        lista_ptr_t actual = new (Lista);
+        actual->nodo_asociado = new (Nodo);
+        actual->nodo_sig = new (Lista);
 
         actual = lista;
-        
-        while (actual->nodo_sig != NULL && prioridad && (agregado->puntaje_f >= actual->nodo_sig->nodo_asociado->puntaje_f))
+        actual->nodo_asociado = lista->nodo_asociado;
+        actual->nodo_sig = lista->nodo_sig;
+
+        // cout << "Insertando... (pre-while)" << prioridad << endl;
+        while ((agregado->puntaje_f >= actual->nodo_asociado->puntaje_f) && actual->nodo_sig != NULL)
         {
+            // cout << actual->nodo_sig->nodo_asociado->puntaje_f << endl;
+            // cout << "Entro" << endl;
+            // cout << actual->nodo_sig << endl;
             actual = actual->nodo_sig;
+            // cout << actual << endl;
         }
+        // cout << "Insertando... (pos-while)" << endl;
+
+        lista_ptr_t auxiliar = new (Lista);
+        auxiliar->nodo_asociado = new (Nodo);
+        auxiliar->nodo_sig = new (Lista);
 
         if (actual == lista && agregado->puntaje_f <= actual->nodo_asociado->puntaje_f)
         {
-            cout << "Inserta al inicio" << endl;
             auxiliar->nodo_sig = lista;
             lista = auxiliar;
+            cout << "Inserta al inicio" << endl;
+
+            // cout << "Temp (F):" << puntaje_f_temp << endl;
+            // cout << "Agregado (F): " << agregado->puntaje_f << endl;
         }
         else if (actual->nodo_sig == NULL)
         {
-            cout << "Inserta al final" << endl;
             auxiliar->nodo_sig = NULL;
             actual->nodo_sig = auxiliar;
+            cout << "Inserta al final" << endl;
         }
         else if (actual->nodo_sig != NULL)
         {
-            cout << "Inserta en medio" << endl;
             auxiliar->nodo_sig = actual->nodo_sig;
             actual->nodo_sig = auxiliar;
+            cout << "Inserta en medio" << endl;
         }
     } 
-
-    // lista->nodo_asociado->puntaje_g = agregado->puntaje_g;
-    // lista->nodo_asociado->puntaje_h = agregado->puntaje_h;
-    // lista->nodo_asociado->puntaje_f = agregado->puntaje_f;
-    // lista->nodo_asociado->ciudad = agregado->ciudad;
-    // lista->nodo_asociado->adyacentes = agregado->adyacentes;
 }
 
 nodo_ptr_t EliminaEnLista(lista_ptr_t &lista, nodo_ptr_t &eliminado)
@@ -153,21 +184,17 @@ bool BuscaEnLista(lista_ptr_t &lista, nodo_ptr_t &nodo)
     lista_ptr_t actual = new(Lista);
     actual = lista;
 
-    cout << actual->nodo_asociado << endl;
-    cout << lista->nodo_asociado << endl;
 
-    ImprimeLista(lista, "");
+    // ImprimeLista(lista, "");
     bool presente = false;
-    while (actual->nodo_sig != NULL && actual->nodo_asociado != nodo)
+    while (actual->nodo_asociado != nodo && actual->nodo_sig != NULL)
     {
-        auxiliar = actual;
+        // cout << '\t' << actual->nodo_asociado << endl;
         actual = actual->nodo_sig;
     }
 
     if (actual->nodo_asociado == nodo) presente = true;
 
-    delete auxiliar;
-    delete actual;
     return presente;
 }
 
@@ -183,6 +210,7 @@ void A_Estrella(nodo_ptr_t &inicio, nodo_ptr_t &final)
     bool encontrado = false;
     while (col_prio != NULL && !encontrado)
     {
+        cout << endl << "[WHILE]" << endl << endl;
         nodo_ptr_t presente = new (Nodo);
         presente = EliminaEnLista(col_prio, col_prio->nodo_asociado);
 
@@ -190,9 +218,10 @@ void A_Estrella(nodo_ptr_t &inicio, nodo_ptr_t &final)
 
         if (presente == final) encontrado = true;
 
-        // ImprimeLista(col_prio, "Prioridad");
+        ImprimeLista(col_prio, "Prioridad");
         // ImprimeLista(explorados, "Explorados");
 
+        cout << endl << "Cantidad de iteraciones: " << presente->adyacentes.size() << endl;
         for (size_t i = 0; i < presente->adyacentes.size(); i++)
         {
             nodo_ptr_t hijo = new Nodo();
@@ -201,25 +230,35 @@ void A_Estrella(nodo_ptr_t &inicio, nodo_ptr_t &final)
             double puntaje_g_temp = presente->puntaje_g + costo;
             double puntaje_f_temp = puntaje_g_temp + hijo->puntaje_h;
 
-            // cout << puntaje_g_temp + hijo->puntaje_h << endl;
-            // cout << puntaje_f_temp << endl;
+            cout << endl << hijo->ciudad << endl;
+            cout << "Temp (F):" << puntaje_f_temp << endl;
+            cout << "Hijo (F):" << hijo->puntaje_f << endl << endl;
 
             /*if hijo node has been evaluated and
             the newer f_score is higher, skip*/
-            if (BuscaEnLista(explorados, hijo) && (puntaje_f_temp >= hijo->puntaje_f)) continue;
+            if (BuscaEnLista(explorados, hijo) || puntaje_f_temp >= hijo->puntaje_f)
+            {
+                // ImprimeLista(col_prio, "Prio");
+                AgregaEnLista(col_prio, hijo, true);
+                continue;
+            }
+
+            // AgregaEnLista(col_prio, hijo, true);
 
             /*else if hijo node is not in queue or
             newer f_score is lower*/
-            else if(BuscaEnLista(col_prio, hijo) || puntaje_f_temp < hijo->puntaje_f) 
+            if (puntaje_f_temp < hijo->puntaje_f)
             {
-                cout << "Entro" << endl;
                 hijo->padre = presente;
                 hijo->puntaje_g = puntaje_g_temp;
                 hijo->puntaje_f = puntaje_f_temp;
-                if (BuscaEnLista(col_prio, hijo)) EliminaEnLista(col_prio, hijo);
 
-                AgregaEnLista(col_prio, hijo, true);
+                nodo_ptr_t auxiliar = new (Nodo);
+                if (BuscaEnLista(col_prio, hijo)) auxiliar = EliminaEnLista(col_prio, hijo);
+
             }
+            AgregaEnLista(col_prio, hijo, true);
+
         }
     }
     
@@ -228,11 +267,16 @@ void A_Estrella(nodo_ptr_t &inicio, nodo_ptr_t &final)
 void ImprimeCamino(nodo_ptr_t meta)
 {
     vector<string> camino;
+    nodo_ptr_t nodo = new Nodo();
     for (nodo_ptr_t nodo = meta; nodo != NULL; nodo = nodo->padre)
+    {
         camino.push_back(nodo->ciudad);
+    }
 
     for (auto i = camino.cbegin(); i != camino.cend(); i++)
+    {
         cout << *i << endl;
+    }
 }
 
 
