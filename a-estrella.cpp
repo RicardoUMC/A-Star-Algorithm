@@ -157,7 +157,7 @@ int main(void)
     
     // Mehadia
     AsociaArista(Mehadia, Lugoj, 70);
-    AsociaArista(Mehadia, Mehadia, 75);
+    AsociaArista(Mehadia, Drobeta, 75);
     
     // Drobeta
     AsociaArista(Drobeta, Mehadia, 75);
@@ -413,9 +413,9 @@ void A_Estrella(nodo_ptr_t &inicio, nodo_ptr_t &final)
             if (BuscaEnLista(explorados, hijo) && puntaje_f_temp >= hijo->puntaje_f)
                 continue;
 
-             /*Si no, el nodo hijo no está en la cola de prioridad o
-             el nuevo puntaje de f es mejor*/
-             else if (!BuscaEnLista(col_prio, hijo) || puntaje_f_temp < hijo->puntaje_f)
+            /*Si no, el nodo hijo no está en la cola de prioridad o
+            el nuevo puntaje de f es mejor*/
+            else if (!BuscaEnLista(col_prio, hijo) || puntaje_f_temp < hijo->puntaje_f)
             {
                 hijo->padre = presente;
                 hijo->puntaje_g = puntaje_g_temp;
