@@ -402,7 +402,6 @@ void A_Estrella(nodo_ptr_t &inicio, nodo_ptr_t &final)
         {
             nodo_ptr_t hijo = new Nodo();
             hijo = presente->adyacentes[i]->objetivo;
-            cout << hijo->ciudad << endl;
             double costo = presente->adyacentes[i]->costo;
             double puntaje_g_temp = presente->puntaje_g + costo;
             double puntaje_f_temp = puntaje_g_temp + hijo->puntaje_h;
